@@ -1,0 +1,4 @@
+[alpaca.sources]
+# Base URL for the API
+# Production
+base_url = "https://data.alpaca.markets"
