@@ -2,3 +2,15 @@
 # Base URL for the API
 # Production
 base_url = "https://data.alpaca.markets"
+
+[sources.parallel_load.data_writer]
+file_max_items=100000
+
+[normalize]
+workers=10
+
+[data_writer]
+file_max_items=100000
+
+[load]
+workers=11
