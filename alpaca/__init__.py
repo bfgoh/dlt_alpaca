@@ -10,6 +10,7 @@ import dlt
 @dlt.source(name="alpaca", parallelized=True)
 def alpaca_source(
     list_of_stocks: list,
+    split_adjusted: str,
     api_key: str = dlt.secrets.value,
     api_secret: str = dlt.secrets.value,
     base_url: str = dlt.config.value,
@@ -26,8 +27,8 @@ def alpaca_source(
         },
         "resources": [
             {
-                "name": f"historical_bar_{ticker}",
-                "table_name": f"{ticker}",  # This is the name of table in  Postgres
+                "name": f"{ticker}_{split_adjusted}",
+                "table_name": f"{ticker}_{split_adjusted}",  # This is the name of table in  Postgres
                 "endpoint": {
                     "data_selector": "bars",
                     "path": "/v2/stocks/{symbol}/bars",
@@ -35,14 +36,14 @@ def alpaca_source(
                         "symbol": ticker,
                         "timeframe": "1T",
                         "start": "{incremental.start_value}",
-                        "adjustment": "raw",
+                        "adjustment": split_adjusted,
                         "feed": "sip",
                         "limit": 10_000,
                         "sort": "asc",
                     },
                     "incremental": {
                         "cursor_path": "t",
-                        "initial_value": "2025-01-01T00:00:00Z",
+                        "initial_value": "2016-01-01T00:00:00Z",
                     },
                 },
             }
